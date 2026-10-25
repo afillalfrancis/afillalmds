@@ -31,15 +31,13 @@
 <style>
 :root{
   --blue:#1a73e8;--red:#ea4335;--yellow:#fbbc04;--green:#34a853;
-  --primary:#1a73e8;--on-primary:#fff;--container:#e8f0fe;--on-container:#174ea6;
-  --bg:#fff;--surface:#fff;--tonal:#f1f3f4;--ink:#202124;--muted:#5f6368;--line:#dadce0;--road:#3c4043;
+  --gold:#d9b96a;--gold-soft:#fbf4de;
+  --primary:#1a73e8;--on-primary:#fff;--container:#fbf4de;--on-container:#6b5314;
+  --bg:#fff;--surface:#fff;--tonal:#fdfaf1;--ink:#111;--muted:#5f6368;--line:#eadfc0;--road:#3c4043;
+  color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--primary:#8ab4f8;--on-primary:#202124;--container:#28344b;--on-container:#d2e3fc;--bg:#202124;--surface:#292a2d;--tonal:#303134;--ink:#e8eaed;--muted:#9aa0a6;--line:#3c4043;--road:#171717}
-}
-:root[data-theme="dark"]{--primary:#8ab4f8;--on-primary:#202124;--container:#28344b;--on-container:#d2e3fc;--bg:#202124;--surface:#292a2d;--tonal:#303134;--ink:#e8eaed;--muted:#9aa0a6;--line:#3c4043;--road:#171717}
 :root{--roadh:112px}
 @media(max-width:640px){:root{--roadh:88px}}
 html{scroll-padding-top:calc(64px + var(--roadh) + 1.5rem + env(safe-area-inset-top,0px));scroll-behavior:smooth}
@@ -52,7 +50,7 @@ a{color:var(--primary)}
 .wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
 .p{max-width:62ch}
 
-.appbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.appbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:2px solid var(--gold)}
 .appbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:1rem}
 .logo{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--ink);font-size:1.2rem;font-weight:500}
 .piston{width:36px;height:36px;flex:none;fill:var(--primary)}
@@ -68,14 +66,15 @@ a{color:var(--primary)}
 @media(max-width:700px){.appbar nav a:not(.call){display:none}}
 
 .btn{display:inline-block;background:var(--primary);color:var(--on-primary);font:500 1rem inherit;font-family:inherit;padding:.75rem 1.6rem;border-radius:100px;text-decoration:none;border:0;cursor:pointer;transition:box-shadow .2s}
-.btn:hover{box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15)}
-.btn.outline{background:transparent;color:var(--primary);border:1px solid var(--line)}
+.btn:hover{box-shadow:0 0 0 2px var(--gold),0 6px 18px rgba(217,185,106,.4)}
+.btn.outline{background:transparent;color:var(--primary);border:1px solid var(--gold)}
 .btn.outline:hover{background:var(--container);box-shadow:none}
 
 .hero{padding:3.5rem 0 1rem}
-.est{display:inline-block;background:var(--container);color:var(--on-container);font-weight:500;font-size:.9rem;padding:.35rem .9rem;border-radius:100px;margin-bottom:1rem}
+.est{border:1px solid var(--gold);display:inline-block;background:var(--container);color:var(--on-container);font-weight:500;font-size:.9rem;padding:.35rem .9rem;border-radius:100px;margin-bottom:1rem}
 .hero h1{font-size:clamp(2.4rem,7vw,4.5rem);max-width:15ch}
-.hero h1 span{color:var(--primary)}
+.hero h1{color:#000}
+.hero h1 span{color:var(--blue)}
 .hero p{font-size:1.15rem;color:var(--muted);max-width:50ch;margin:1.25rem 0 1.75rem}
 .cta{display:flex;gap:.75rem;flex-wrap:wrap}
 
@@ -90,6 +89,23 @@ a{color:var(--primary)}
 .carwrap.brake #tl{fill:#ff3b30;filter:drop-shadow(0 0 4px #ff3b30)}
 @media(max-width:640px){.carwrap{width:130px;bottom:12px}.roadcard .lane{top:12px}}
 
+/* waving instructor */
+.guide{position:fixed;left:.75rem;bottom:calc(.75rem + env(safe-area-inset-bottom,0px));z-index:6;width:92px;pointer-events:none}
+.guide svg{display:block;width:100%;height:auto;overflow:visible}
+.guide .arm,.guide .swing{transform-box:view-box;transform-origin:58px 62px}
+.guide .arm{transition:transform .35s ease}
+.guide.on .arm{transform:rotate(-142deg)}
+.guide.on .swing{animation:wave .38s ease-in-out infinite alternate}
+.guide.on .body{animation:bob .76s ease-in-out infinite}
+.guide .say{position:absolute;left:66px;bottom:80%;width:max-content;max-width:230px;background:#fff;color:#111;border:1.5px solid var(--gold);border-radius:16px;padding:.5rem .8rem;font:500 .85rem/1.35 Roboto,system-ui,sans-serif;box-shadow:0 4px 14px rgba(217,185,106,.35);opacity:0;transform:translateY(6px) scale(.96);transform-origin:0 100%;transition:opacity .25s,transform .25s}
+.guide .say.show{opacity:1;transform:none}
+.guide .say::before{content:"";position:absolute;left:-7px;bottom:10px;width:12px;height:12px;background:#fff;border-left:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(45deg)}
+.guide .say b{color:var(--blue);font-weight:700}
+@keyframes wave{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@media(max-width:640px){.guide{width:70px}.guide .say{left:50px;max-width:170px;font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){.guide.on .swing,.guide.on .body{animation:none}.guide .arm{transition:none}}
+
 [hidden]{display:none!important}
 .course-link{display:block;color:inherit;text-decoration:none}
 .more{display:block;margin-top:.9rem;color:var(--primary);font-weight:500}
@@ -103,33 +119,34 @@ section{padding:3.5rem 0}
 section h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.6rem}
 .lede{color:var(--muted);margin:0 0 2rem}
 .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
-.course{background:var(--tonal);border-radius:24px;padding:1.5rem;transition:box-shadow .2s,transform .2s}
-.course:hover{box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);transform:translateY(-2px)}
+.course{background:linear-gradient(160deg,#fffdf6,#fbf4de);border:1px solid var(--gold);border-radius:24px;padding:1.5rem;transition:box-shadow .2s,transform .2s}
+.course:hover{box-shadow:0 10px 28px rgba(217,185,106,.35);transform:translateY(-2px)}
 .course:nth-child(4n+1){--c:var(--blue)}.course:nth-child(4n+2){--c:var(--red)}
 .course:nth-child(4n+3){--c:var(--yellow)}.course:nth-child(4n+4){--c:var(--green)}
 .ic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;background:color-mix(in srgb,var(--c) 22%,var(--surface));margin-bottom:1rem}
 .course h3{font-size:1.25rem;margin-bottom:.5rem}
 .course p{margin:0 0 1rem;color:var(--muted)}
-.fee{display:inline-block;font-size:.85rem;font-weight:500;color:var(--on-container);background:var(--container);padding:.25rem .75rem;border-radius:8px}
+.fee{border:1px solid var(--gold);display:inline-block;font-size:.85rem;font-weight:500;color:var(--on-container);background:var(--container);padding:.25rem .75rem;border-radius:8px}
 
 .steps ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.5rem;counter-reset:s}
 .steps li{counter-increment:s;padding-top:3.4rem;position:relative}
 .steps li::before{content:counter(s);position:absolute;top:0;left:0;width:2.5rem;height:2.5rem;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:500;font-size:1.1rem;background:var(--c)}
 .steps li:nth-child(1){--c:var(--blue)}.steps li:nth-child(2){--c:var(--red)}
-.steps li:nth-child(3){--c:var(--yellow)}.steps li:nth-child(3)::before{color:#202124}
+.steps li:nth-child(3){--c:var(--yellow)}
 .steps li:nth-child(4){--c:var(--green)}
+.steps li:nth-child(3)::before{color:#202124}
 .steps h3{font-size:1.15rem;margin-bottom:.3rem}
 .steps p{margin:0;color:var(--muted)}
 
 .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1.5rem}
-.why div{border:1px solid var(--line);border-radius:16px;padding:1.25rem 1.4rem}
+.why div{border:1px solid var(--gold);border-top:3px solid var(--gold);border-radius:16px;padding:1.25rem 1.4rem}
 .why h3{font-size:1.1rem;margin-bottom:.3rem}
 .why p{margin:0;color:var(--muted)}
 
 .map{border:0;width:100%;height:380px;border-radius:28px;background:var(--tonal);display:block}
 .mapbtns{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
 
-.bookbox{background:var(--container);color:var(--on-container);border-radius:28px;padding:2.25rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
+.bookbox{background:linear-gradient(145deg,#fffaea,#f8edc8);border:1px solid var(--gold);color:var(--on-container);border-radius:28px;padding:2.25rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
 @media(max-width:760px){.bookbox{grid-template-columns:1fr;padding:1.5rem}}
 .bookbox a:not(.btn){color:var(--on-container);font-weight:500}
 .bookbox p{margin:.6rem 0}
@@ -141,7 +158,7 @@ input:focus,select:focus{outline:2px solid var(--primary);border-color:var(--pri
 #ok a{color:var(--primary)}
 
 .fab{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:6;display:flex;align-items:center;gap:.5rem;background:var(--container);color:var(--on-container);font-weight:500;text-decoration:none;padding:1rem 1.35rem;border-radius:16px;box-shadow:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15)}
-footer{background:var(--tonal);padding:2rem 0 5.5rem;color:var(--muted);font-size:.95rem}
+footer{background:var(--gold-soft);border-top:2px solid var(--gold);padding:2rem 0 5.5rem;color:var(--muted);font-size:.95rem}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.course{transition:none}}
 </style>
@@ -289,6 +306,28 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem
 
 </main>
 
+<div class="guide" id="guide" aria-hidden="true">
+  <div class="say" id="say"></div>
+  <svg viewBox="0 0 100 130" fill="none">
+    <g class="body">
+      <ellipse cx="42" cy="126" rx="26" ry="3.5" fill="#000" opacity=".12"/>
+      <path d="M30 124V96H54V124Z" fill="#2f3b52"/>
+      <path d="M27 98L27 70Q27 60 38 60H46Q57 60 57 70L57 98Z" fill="#1a73e8"/>
+      <path d="M36 60L42 69L48 60Z" fill="#fff"/>
+      <rect x="45" y="75" width="9" height="5" rx="1" fill="#fff"/><rect x="46.5" y="77" width="6" height="1" fill="#d9b96a"/>
+      <path d="M27 66Q22 72 23 88" stroke="#1a73e8" stroke-width="9" stroke-linecap="round"/><circle cx="23.5" cy="91" r="4.6" fill="#f1c9a5"/>
+      <rect x="38" y="52" width="8" height="9" rx="3" fill="#e8b88f"/>
+      <circle cx="42" cy="40" r="15" fill="#f1c9a5"/>
+      <path d="M27 38Q27 22 42 22Q57 22 57 38Q50 31 42 31Q34 31 27 38Z" fill="#202124"/>
+      <path d="M26 34Q26 20 42 20Q58 20 58 34L58 36Q42 28 26 36Z" fill="#fff" stroke="#d9b96a" stroke-width="1.2"/>
+      <path d="M26 36Q42 28 58 36L66 38Q58 41 52 38Q42 33 32 38Q28 40 26 36Z" fill="#1a73e8"/>
+      <circle cx="36.5" cy="42" r="1.7" fill="#202124"/><circle cx="47.5" cy="42" r="1.7" fill="#202124"/>
+      <path d="M36 48Q42 53 48 48" stroke="#8a4b2d" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="33" cy="47" r="2.4" fill="#f0a58f" opacity=".5"/><circle cx="51" cy="47" r="2.4" fill="#f0a58f" opacity=".5"/>
+      <g class="arm"><g class="swing"><path d="M58 64Q65 74 66 88" stroke="#1a73e8" stroke-width="9" stroke-linecap="round"/><circle cx="66" cy="92" r="5" fill="#f1c9a5"/><path d="M62.5 90L61 86M66 88.5V84M69.5 90L71 86" stroke="#f1c9a5" stroke-width="2.2" stroke-linecap="round"/></g></g>
+    </g>
+  </svg>
+</div>
 <a class="fab" href="tel:+919447668055" aria-label="Call 9447668055">📞 Call now</a>
 
 <footer>
@@ -341,6 +380,53 @@ document.getElementById('f').addEventListener('submit',function(e){
   function kick(){if(!running){running=true;requestAnimationFrame(frame)}}
   addEventListener('scroll',kick,{passive:true});addEventListener('resize',kick);addEventListener('load',kick);
   kick();
+})();
+</script>
+<script>
+(function(){
+  var g=document.getElementById('guide'),say=document.getElementById('say');
+  var order=['hero','courses','how','why','find','book'];
+  var S={
+    hero:{say:['Want to learn driving? Let me help you! 🚗','Scared of the steering wheel? Don’t be, we are patient!','Bike, car or truck, what do you want to drive?'],
+          end:['Tap <b>Book your first lesson</b>, we will sort it out for you!','Any questions? Call us, we will sort it out for you!','Ready when you are, we will sort it out for you!']},
+    courses:{say:['Two wheeler, four wheeler or heavy vehicle? Pick your ride! 🛵','Not sure which course fits? Just ask us!','Learner’s licence help is included too! 📄'],
+          end:['Tap a course to see all <b>24 classes</b>!','Confused? Call us, we will sort it out for you!','Choose one and we will sort the rest for you!']},
+    how:{say:['Nervous? Everyone starts with a trial lesson 🙂','Four easy stages, and you move on when you’re ready!','Mock test first, then we take you to test day!'],
+          end:['Take your time, we go at your pace.','Don’t worry, we will sort it out for you!','Step by step, we will be with you!']},
+    why:{say:['Calm instructors, nobody shouts! 😊','Dual-control cars, so I can brake too!','Pick a morning or afternoon slot that suits you!'],
+          end:['Learn without worry, we will sort it out for you!','Safe, calm and patient, that’s us!','Any special need? Tell us, we will sort it out!']},
+    find:{say:['Come and visit us in Upputhara! 📍','We are open 8:30 am to 5:00 pm!','Tap the map for directions!'],
+          end:['Need directions? Tap <b>Get directions</b>!','Can’t find us? Call us, we will guide you!','See you soon in Upputhara! 👋']},
+    book:{say:['Ready to drive? Call 9447668055! 📞','Fill in the form and we will confirm your slot!','Prefer WhatsApp? Send a request, it’s quick!'],
+          end:['Send your details and we will sort it out for you! ✅','We will confirm your slot soon, thank you!','Welcome to Afillal MDS family! 🎉']}
+  };
+  var n=0,cur='',lastT=0,on=false,first=true,idle,hide,pend;
+  function sec(){
+    var h=innerHeight,k='hero';
+    for(var i=0;i<order.length;i++){var e=document.getElementById(order[i]);if(e&&e.getBoundingClientRect().top<=h*.45)k=order[i]}
+    if(innerHeight+scrollY>=document.documentElement.scrollHeight-8)k='book';
+    return k;
+  }
+  function pick(a){return a[n%a.length]}
+  function talk(t){say.innerHTML=t;say.classList.add('show');lastT=Date.now()}
+  addEventListener('scroll',function(){
+    clearTimeout(idle);clearTimeout(hide);
+    var k=sec();
+    if(!on){
+      on=true;g.classList.add('on');n++;cur=k;clearTimeout(pend);
+      talk((first&&k==='hero'?'<b>Hi!</b> 👋 ':'')+pick(S[k].say));first=false;
+    }else if(k!==cur){
+      cur=k;var w=1400-(Date.now()-lastT);
+      clearTimeout(pend);
+      pend=setTimeout(function(){talk(pick(S[cur].say))},Math.max(0,w));
+    }
+    idle=setTimeout(end,650);
+  },{passive:true});
+  function end(){
+    on=false;g.classList.remove('on');clearTimeout(pend);
+    talk(pick(S[sec()].end));
+    hide=setTimeout(function(){say.classList.remove('show')},4500);
+  }
 })();
 </script>
 </body>
